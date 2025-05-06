@@ -4,10 +4,10 @@ include '../components/connect.php';
 
 session_start();
 
-$admin_id = $_SESSION['admin_id'];
+$moder_id = $_SESSION['moder_id'];
 
-if(!isset($admin_id)){
-   header('location:admin_login.php');
+if(!isset($moder_id)){
+   header('location:moder_login.php');
 }
 
 if(isset($_POST['update_payment'])){
@@ -43,7 +43,7 @@ if(isset($_GET['delete'])){
 </head>
 <body>
 
-<?php include '../components/admin_header.php'; ?>
+<?php include '../components/moder_header.php'; ?>
 
 <section class="orders">
 

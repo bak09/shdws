@@ -4,39 +4,10 @@ include '../components/connect.php';
 
 session_start();
 
-$admin_id = $_SESSION['admin_id'];
+$moder_id = $_SESSION['moder_id'];
 
-if(!isset($admin_id)){
-   header('location:admin_login.php');
-}
-
-if(isset($_GET['ban'])){
-    $user_id = $_GET['ban'];
-    $ban_user = $conn->prepare("UPDATE `users` SET is_banned = 1 WHERE id = ?");
-    $ban_user->execute([$user_id]);
-    header('location: users_accounts.php');
-}
-
-if(isset($_GET['unban'])){
-   $user_id = $_GET['unban'];
-   $unban_user = $conn->prepare("UPDATE `users` SET is_banned = 0 WHERE id = ?");
-   $unban_user->execute([$user_id]);
-   header('location: users_accounts.php');
-}
-
-if(isset($_GET['delete'])){
-   $delete_id = $_GET['delete'];
-   $delete_user = $conn->prepare("DELETE FROM `users` WHERE id = ?");
-   $delete_user->execute([$delete_id]);
-   $delete_orders = $conn->prepare("DELETE FROM `orders` WHERE user_id = ?");
-   $delete_orders->execute([$delete_id]);
-   $delete_messages = $conn->prepare("DELETE FROM `messages` WHERE user_id = ?");
-   $delete_messages->execute([$delete_id]);
-   $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE user_id = ?");
-   $delete_cart->execute([$delete_id]);
-   $delete_wishlist = $conn->prepare("DELETE FROM `wishlist` WHERE user_id = ?");
-   $delete_wishlist->execute([$delete_id]);
-   header('location:users_accounts.php');
+if(!isset($moder_id)){
+   header('location:moder_login.php');
 }
 
 ?>
@@ -56,7 +27,7 @@ if(isset($_GET['delete'])){
 </head>
 <body>
 
-<?php include '../components/admin_header.php'; ?>
+<?php include '../components/moder_header.php'; ?>
 
 <section class="accounts">
 
@@ -74,18 +45,6 @@ if(isset($_GET['delete'])){
       <p> user id : <span><?= $fetch_accounts['id']; ?></span> </p>
       <p> username : <span><?= $fetch_accounts['name']; ?></span> </p>
       <p> email : <span><?= $fetch_accounts['email']; ?></span> </p>
-      <?php if ($fetch_accounts['is_banned'] == 0) { ?>
-      <p style="color: green;"> User is not banned </p>
-      <?php } else { ?>
-      <p style="color: red;"> User is banned </p>
-      <?php } ?>
-
-      <a href="users_accounts.php?delete=<?= $fetch_accounts['id']; ?>" onclick="return confirm('delete this account? the user related information will also be delete!')" class="delete-btn">delete</a>
-      <?php if ($fetch_accounts['is_banned'] == 0) { ?>
-        <a href="users_accounts.php?ban=<?= $fetch_accounts['id']; ?>" onclick="return confirm('Ban this user?')" class="btn">Ban</a>
-      <?php } else { ?>
-        <a href="users_accounts.php?unban=<?= $fetch_accounts['id']; ?>" onclick="return confirm('Unban this user?')" class="btn">Unban</a>
-      <?php } ?>
    </div>
    <?php
          }

@@ -4,10 +4,10 @@ include '../components/connect.php';
 
 session_start();
 
-$admin_id = $_SESSION['admin_id'];
+$moder_id = $_SESSION['moder_id'];
 
-if(!isset($admin_id)){
-   header('location:admin_login.php');
+if(!isset($moder_id)){
+   header('location:moder_login.php');
 }
 
 if(isset($_POST['submit'])){
@@ -15,8 +15,8 @@ if(isset($_POST['submit'])){
    $name = $_POST['name'];
    $name = filter_var($name, FILTER_SANITIZE_STRING);
 
-   $update_profile_name = $conn->prepare("UPDATE `admins` SET name = ? WHERE id = ?");
-   $update_profile_name->execute([$name, $admin_id]);
+   $update_profile_name = $conn->prepare("UPDATE `moderators` SET name = ? WHERE id = ?");
+   $update_profile_name->execute([$name, $moder_id]);
 
    $empty_pass = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
    $prev_pass = $_POST['prev_pass'];
@@ -35,8 +35,8 @@ if(isset($_POST['submit'])){
       $message[] = 'confirm password not matched!';
    }else{
       if($new_pass != $empty_pass){
-         $update_admin_pass = $conn->prepare("UPDATE `admins` SET password = ? WHERE id = ?");
-         $update_admin_pass->execute([$confirm_pass, $admin_id]);
+         $update_moder_pass = $conn->prepare("UPDATE `moderators` SET password = ? WHERE id = ?");
+         $update_moder_pass->execute([$confirm_pass, $moder_id]);
          $message[] = 'password updated successfully!';
       }else{
          $message[] = 'please enter a new password!';
@@ -62,7 +62,7 @@ if(isset($_POST['submit'])){
 </head>
 <body>
 
-<?php include '../components/admin_header.php'; ?>
+<?php include '../components/moder_header.php'; ?>
 
 <section class="form-container">
 
